@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ChartOptions, Color } from 'chart.js';
 
 @Component({
@@ -6,19 +6,21 @@ import { ChartOptions, Color } from 'chart.js';
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.css']
 })
-export class BarChartComponent {
+export class BarChartComponent implements OnChanges {
+  @Input() data: number[] = [];
+  @Input() labels: string[] = [];
+
   barChartData;
   barChartOptions: ChartOptions;
 
   constructor() {
     this.barChartData = {
       datasets: [{
-        data: [20, 10, 2, 1],
+        data: this.data
       }],
-      labels: ['a', 'b', 'ciao', 'bella']
+      labels: this.labels
     };
     this.barChartOptions = {
-
       backgroundColor: (ctx) => {
         let color: Color[] = ["#F3A712", "#a8c686", "#774c60", "#FF6B6B", "#669BBC"];
         let index = ctx.dataIndex % color.length;
@@ -31,5 +33,12 @@ export class BarChartComponent {
         }
       }
     };
+  }
+  // aggiorna dati chart quando l'input cambia
+  ngOnChanges(changes: SimpleChanges) {
+    let newData: number[] = changes['data']?.currentValue;
+    let newLabels: string[] = changes['labels']?.currentValue;
+    this.barChartData.datasets[0].data.push(...newData);
+    this.barChartData.labels.push(...newLabels);
   }
 }
