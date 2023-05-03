@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import DatalabelsPlugin from 'chartjs-plugin-datalabels';
-import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
@@ -12,6 +12,7 @@ export class PieChartLucaComponent implements OnChanges {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   @Input() data: number[] = []
+  @Input() labels: string[] = []
 
 
   public pieChartOptions: ChartConfiguration['options'] = {
@@ -31,7 +32,7 @@ export class PieChartLucaComponent implements OnChanges {
     }
   };
   public pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: [ [ 'Download', 'Sales' ], [ 'In', 'Store', 'Sales' ], 'Mail Sales' ],
+    labels: this.labels,
     datasets: [ {
       data: this.data
     } ]
@@ -39,15 +40,12 @@ export class PieChartLucaComponent implements OnChanges {
   public pieChartType: ChartType = 'pie';
   public pieChartPlugins = [ DatalabelsPlugin ];
 
-  public chartHovered({ event, active }: { event: ChartEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     let newData: number[] = changes['data']?.currentValue;
+    let newLabels: string[] = changes['labels']?.currentValue;
     this.pieChartData.datasets[0].data.push(...newData);
+    this.pieChartData.labels?.push(...newLabels)
   }
 }
 
-// data = [ 300, 500, 100 ]
-// labels: [ [ 'Download', 'Sales' ], [ 'In', 'Store', 'Sales' ], 'Mail Sales' ]
