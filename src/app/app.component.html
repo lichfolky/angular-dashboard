@@ -1,2 +1,5 @@
-<app-bar-chart [data]="data" [labels]="labels"></app-bar-chart>
-<app-pie-chart-luca [data]="data" [labels]="labels"></app-pie-chart-luca>
+<div class="wrapper">
+    <app-bar-chart [data]="data" [labels]="labels"></app-bar-chart>
+    <app-pie-chart-luca [data]="[ 300, 500, 100 ]"
+        [labels]="[ 'Download Sales','In Store Sales', 'Mail Sales' ]"></app-pie-chart-luca>
+</div>

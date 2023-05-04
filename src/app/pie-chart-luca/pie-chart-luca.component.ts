@@ -11,9 +11,8 @@ import { BaseChartDirective } from 'ng2-charts';
 export class PieChartLucaComponent implements OnChanges {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
-  @Input() data: number[] = []
-  @Input() labels: string[] = []
-
+  @Input() data: number[] = [];
+  @Input() labels: string[] = [];
 
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -33,19 +32,19 @@ export class PieChartLucaComponent implements OnChanges {
   };
   public pieChartData: ChartData<'pie', number[], string | string[]> = {
     labels: this.labels,
-    datasets: [ {
+    datasets: [{
       data: this.data
-    } ]
+    }]
   };
   public pieChartType: ChartType = 'pie';
-  public pieChartPlugins = [ DatalabelsPlugin ];
+  public pieChartPlugins = [DatalabelsPlugin];
 
 
   ngOnChanges(changes: SimpleChanges) {
     let newData: number[] = changes['data']?.currentValue;
     let newLabels: string[] = changes['labels']?.currentValue;
     this.pieChartData.datasets[0].data.push(...newData);
-    this.pieChartData.labels?.push(...newLabels)
+    this.pieChartData.labels?.push(...newLabels);
   }
 }
 
