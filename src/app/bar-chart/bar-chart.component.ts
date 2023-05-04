@@ -7,7 +7,7 @@ import { ChartOptions, Color } from 'chart.js';
   styleUrls: ['./bar-chart.component.css']
 })
 export class BarChartComponent implements OnChanges {
-  @Input() data: number[] = [];
+  @Input() data: number[][] = [];
   @Input() labels: string[] = [];
 
   barChartData;
@@ -15,11 +15,11 @@ export class BarChartComponent implements OnChanges {
 
   constructor() {
     this.barChartData = {
-      datasets: [{
-        data: this.data
-      }],
+      datasets: new Array(),
       labels: this.labels
     };
+    this.barChartOptions = {};
+    /*
     this.barChartOptions = {
       backgroundColor: (ctx) => {
         let color: Color[] = ["#F3A712", "#a8c686", "#774c60", "#FF6B6B", "#669BBC"];
@@ -32,13 +32,19 @@ export class BarChartComponent implements OnChanges {
           display: false
         }
       }
-    };
+    };*/
   }
   // aggiorna dati chart quando l'input cambia
   ngOnChanges(changes: SimpleChanges) {
-    let newData: number[] = changes['data']?.currentValue;
+    let newData: number[][] = changes['data']?.currentValue;
     let newLabels: string[] = changes['labels']?.currentValue;
-    this.barChartData.datasets[0].data.push(...newData);
+
+    for (let i = 0; i < newData.length; i++) {
+      let serie = newData[i];
+      let dataObj = { data: serie };
+      this.barChartData.datasets.push(dataObj);
+
+    }
     this.barChartData.labels.push(...newLabels);
   }
 }
